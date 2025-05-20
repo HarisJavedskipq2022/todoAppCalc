@@ -153,20 +153,24 @@ const HomeScreen = () => {
     navigation.navigate('CreateTodo');
   }, [navigation]);
 
-  return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, {color: theme.colors.text}]}>
-          My Tasks
-        </Text>
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
         <TouchableOpacity
-          style={[styles.addButton, {backgroundColor: theme.colors.primary}]}
+          style={[
+            styles.addButton,
+            {backgroundColor: theme.colors.primary, marginRight: 16},
+          ]}
           onPress={handleAddTodo}>
           <Icon name="plus" size={24} color="#fff" />
         </TouchableOpacity>
-      </View>
+      ),
+    });
+  }, [navigation, handleAddTodo, theme.colors.primary]);
 
+  return (
+    <View
+      style={[styles.container, {backgroundColor: theme.colors.background}]}>
       {filteredTodos.length > 0 ? (
         <FlatList
           data={filteredTodos}

@@ -38,7 +38,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen
         name="HomeFeed"
         component={HomeScreen}
-        options={{headerShown: false}}
+        options={{title: 'My Tasks'}}
       />
       <Stack.Screen
         name="Details"
