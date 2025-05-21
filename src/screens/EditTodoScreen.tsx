@@ -1,18 +1,20 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, useState, useCallback} from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
+  Alert,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  Alert,
+  View,
 } from 'react-native';
-import {HomeStackParamList} from '../types/navigation';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import useAppStore, {AppActions, AppState} from '../store/useAppStore';
+import {HomeStackParamList} from '../types/navigation';
 import {useTheme} from '../utils/theme';
-import useAppStore, {AppState, AppActions, Todo} from '../store/useAppStore';
-import {StackNavigationProp} from '@react-navigation/stack';
 
 type EditTodoRouteProp = RouteProp<HomeStackParamList, 'EditTodo'>;
 type EditTodoNavigationProp = StackNavigationProp<
@@ -24,6 +26,7 @@ const EditTodoScreen = () => {
   const theme = useTheme();
   const route = useRoute<EditTodoRouteProp>();
   const navigation = useNavigation<EditTodoNavigationProp>();
+  const insets = useSafeAreaInsets();
   const {id} = route.params;
 
   const todo = useAppStore((state: AppState) =>
@@ -69,8 +72,17 @@ const EditTodoScreen = () => {
   }
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+    <ScrollView
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
+      contentContainerStyle={styles.contentContainer}>
       <Text style={[styles.label, {color: theme.colors.text}]}>Title</Text>
       <TextInput
         style={[
@@ -93,7 +105,7 @@ const EditTodoScreen = () => {
         onPress={handleSaveChanges}>
         <Text style={styles.saveButtonText}>Save Changes</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -132,6 +144,9 @@ const styles = StyleSheet.create({
   // subText: { // Kept if needed for other things, but not used in this version
   //   fontSize: 14,
   // },
+  contentContainer: {
+    flexGrow: 1,
+  },
 });
 
 export default EditTodoScreen;

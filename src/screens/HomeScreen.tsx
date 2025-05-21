@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useEffect} from 'react';
 import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {HomeStackParamList} from '../types/navigation';
 import {useTheme} from '../utils/theme';
 import useAppStore, {AppState, AppActions, Todo} from '../store/useAppStore';
@@ -109,6 +110,7 @@ const HomeScreen = () => {
   const theme = useTheme();
   const navigation =
     useNavigation<StackNavigationProp<HomeStackParamList, 'HomeFeed'>>();
+  const insets = useSafeAreaInsets();
 
   const todos = useAppStore((state: AppState) => state.todos);
   const activeCategory = useAppStore((state: AppState) => state.activeCategory);
@@ -170,7 +172,15 @@ const HomeScreen = () => {
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       {filteredTodos.length > 0 ? (
         <FlatList
           data={filteredTodos}

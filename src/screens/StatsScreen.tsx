@@ -4,10 +4,12 @@ import {useTheme} from '../utils/theme';
 import useAppStore, {AppState, Todo} from '../store/useAppStore';
 import {PieChart} from 'react-native-svg-charts';
 import {Text as SvgText} from 'react-native-svg';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const StatsScreen = () => {
   const theme = useTheme();
   const todos = useAppStore((state: AppState) => state.todos);
+  const insets = useSafeAreaInsets();
 
   const {completedCount, pendingCount, totalCount} = useMemo(() => {
     const completed = todos.filter((todo: Todo) => todo.completed).length;
@@ -79,7 +81,16 @@ const StatsScreen = () => {
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       <Text style={[styles.headerText, {color: theme.colors.text}]}>
         Task Progress
       </Text>

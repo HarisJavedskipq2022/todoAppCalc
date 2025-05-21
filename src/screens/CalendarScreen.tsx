@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import useAppStore, {AppState, Todo} from '../store/useAppStore';
 import {BottomTabParamList} from '../types/navigation';
 import {useTheme} from '../utils/theme';
@@ -33,6 +34,7 @@ const CalendarScreen = () => {
   const navigation = useNavigation<CalendarNavigationProp>();
   const todos = useAppStore((state: AppState) => state.todos);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const insets = useSafeAreaInsets();
 
   const markedDates: CustomMarkedDates = useMemo(() => {
     const marks: CustomMarkedDates = {};
@@ -94,7 +96,16 @@ const CalendarScreen = () => {
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       <Calendar
         style={styles.calendar}
         current={new Date().toISOString().split('T')[0]}

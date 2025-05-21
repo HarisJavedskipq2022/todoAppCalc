@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {RootStackParamList} from '../types/navigation';
@@ -28,6 +29,7 @@ const priorityOptions: Array<{value: Todo['priority']; label: string}> = [
 const CreateTodoScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const insets = useSafeAreaInsets();
 
   const addTodo = useAppStore((state: AppActions) => state.addTodo);
   const categories = useAppStore((state: AppState) => state.categories);
@@ -102,7 +104,15 @@ const CreateTodoScreen = () => {
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: theme.colors.background}]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
       contentContainerStyle={styles.contentContainer}>
       <View style={[styles.formGroup, {borderColor: theme.colors.border}]}>
         <Text style={[styles.label, {color: theme.colors.text}]}>

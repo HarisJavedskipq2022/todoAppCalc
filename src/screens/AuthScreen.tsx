@@ -1,22 +1,25 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../types/navigation';
-import {useTheme} from '../utils/theme';
+import {StyleSheet, Text, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useTheme} from '../utils/theme';
 
 const AuthScreen = () => {
   const theme = useTheme();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  const handleLogin = () => {
-    navigation.navigate('Main');
-  };
+  const insets = useSafeAreaInsets();
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       <Icon
         name="checkbox-marked-circle-outline"
         size={80}
@@ -26,12 +29,6 @@ const AuthScreen = () => {
       <Text style={[styles.subtitle, {color: theme.colors.placeholderText}]}>
         Manage your tasks efficiently
       </Text>
-
-      <TouchableOpacity
-        style={[styles.loginButton, {backgroundColor: theme.colors.primary}]}
-        onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Get Started</Text>
-      </TouchableOpacity>
     </View>
   );
 };

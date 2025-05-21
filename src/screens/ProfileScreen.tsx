@@ -1,20 +1,26 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../types/navigation';
-import {useTheme} from '../utils/theme';
-import useAppStore from '../store/useAppStore';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import useAppStore from '../store/useAppStore';
+import {useTheme} from '../utils/theme';
 
 const ProfileScreen = () => {
   const theme = useTheme();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {profile} = useAppStore();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       <View
         style={[styles.profileHeader, {backgroundColor: theme.colors.card}]}>
         <View style={styles.avatarContainer}>

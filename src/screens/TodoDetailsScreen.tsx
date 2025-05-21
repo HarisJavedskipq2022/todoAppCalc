@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useAppStore, {
   AppActions,
@@ -38,6 +39,7 @@ const TodoDetailsScreen = () => {
   const route = useRoute<TodoDetailsRouteProp>();
   const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
   const {id} = route.params;
+  const insets = useSafeAreaInsets();
 
   const todos = useAppStore((state: AppState) => state.todos);
   const categories = useAppStore((state: AppState) => state.categories);
@@ -84,7 +86,15 @@ const TodoDetailsScreen = () => {
   if (!todo) {
     return (
       <View
-        style={[styles.container, {backgroundColor: theme.colors.background}]}>
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme.colors.background,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          },
+        ]}>
         <Text style={[styles.errorText, {color: theme.colors.error}]}>
           Todo not found
         </Text>
@@ -103,7 +113,15 @@ const TodoDetailsScreen = () => {
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: theme.colors.background}]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
       contentContainerStyle={styles.contentContainer}>
       <View style={styles.header}>
         <View

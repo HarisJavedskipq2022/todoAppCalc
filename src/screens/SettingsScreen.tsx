@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/navigation';
 import {useTheme} from '../utils/theme';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import useAppStore, {AppState, AppActions, Profile} from '../store/useAppStore';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -102,6 +103,7 @@ const SettingsItem = ({
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const insets = useSafeAreaInsets();
 
   const profile = useAppStore((state: AppState) => state.profile);
   const toggleDarkMode = useAppStore(
@@ -170,7 +172,16 @@ const SettingsScreen = () => {
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: theme.colors.background}]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
       contentContainerStyle={styles.contentContainer}>
       <SettingsSection title="Account">
         <SettingsItem

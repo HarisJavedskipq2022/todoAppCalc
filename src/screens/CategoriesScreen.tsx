@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {RootStackParamList} from '../types/navigation';
 import {useTheme} from '../utils/theme';
 import useAppStore, {
@@ -146,6 +147,7 @@ const AddCategoryInput = ({
 const CategoriesScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const insets = useSafeAreaInsets();
 
   const categories = useAppStore((state: AppState) => state.categories);
   const todos = useAppStore((state: AppState) => state.todos);
@@ -208,7 +210,16 @@ const CategoriesScreen = () => {
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}>
       <View style={styles.header}>
         <Text style={[styles.headerTitle, {color: theme.colors.text}]}>
           Categories
